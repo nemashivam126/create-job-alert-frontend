@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 export function JobForm() {
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString();
+    const navigate = useNavigate();
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
     const [errorMsg, setErrorMsg] = useState([]);
@@ -26,7 +28,7 @@ export function JobForm() {
         job_priority: Yup.string().required('Job Priority is required, '),
         status: Yup.string().required('Status is required, '),
         state_id: Yup.string().required('State is required, '),
-        city_id: Yup.string().required('City is required')
+        // city_id: Yup.string().required('City is required')
     });
 
     const handleInputChange = (event) => {
@@ -47,6 +49,8 @@ export function JobForm() {
                     url: 'http://localhost:5000/add-job',
                     data: jobData
                 });
+                navigate('/')
+                window.alert('Job created successfully');
             console.log('Job created successfully:', response.data);
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
